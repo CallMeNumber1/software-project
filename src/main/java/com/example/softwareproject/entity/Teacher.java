@@ -35,6 +35,9 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     private List<TeacherExam> teacherExams;
 
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.REMOVE)
+    private List<TeacherTask> teacherTasks;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime insertTime;
