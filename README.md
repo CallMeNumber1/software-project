@@ -6,3 +6,5 @@
 + 最后合并到 master 分支  
 
 ![](https://raw.githubusercontent.com/zhanyeye/Figure-bed/img/img/20190608000231.png)
+  
+![](https://raw.githubusercontent.com/zhanyeye/Figure-bed/img/img/20190608081908.png)
