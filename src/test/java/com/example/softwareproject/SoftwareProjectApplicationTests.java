@@ -17,7 +17,7 @@ public class SoftwareProjectApplicationTests {
 
     @Test
     public void contextLoads() {
-        System.out.print(conflictService.isConflict());
+        //System.out.print(conflictService.isConflictTest());
     }
 
 }
