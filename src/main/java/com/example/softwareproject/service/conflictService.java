@@ -14,28 +14,20 @@ public class conflictService {
         Exam o_exam = new Exam();
         n_exam.setBeginTime(LocalDateTime.of(2019, 6, 23,15,30,0));
         n_exam.setEndTime(LocalDateTime.of(2019,6,23,17,0,0));
-        o_exam.setBeginTime(LocalDateTime.of(2019,6,23,16,0,0));
-        o_exam.setEndTime(LocalDateTime.of(2019,6,23,18,0,0));
-        boolean ret = true;
-        LocalDateTime begin, terminal;
+        o_exam.setBeginTime(LocalDateTime.of(2019,6,23,9,0,0));
+        o_exam.setEndTime(LocalDateTime.of(2019,6,23,10,0,0));
+        LocalDateTime st1 = n_exam.getBeginTime(), end1 = n_exam.getEndTime();
+        LocalDateTime st2 = o_exam.getBeginTime(), end2 = o_exam.getEndTime();
         //找到较晚的结束时间
-        if (n_exam.getBeginTime().isAfter(o_exam.getBeginTime())) {
-            begin = n_exam.getBeginTime();
+        if (st1.isEqual(st2) || end1.isEqual(end2)) return true;
+        if (st1.isAfter(st2)) {
+            if (st1.isBefore(end2)) return true;
         } else {
-            begin = o_exam.getBeginTime();
+            if (st2.isBefore(end1)) return true;
         }
 
-        if (n_exam.getEndTime().isBefore(o_exam.getEndTime())) {
-            terminal = n_exam.getEndTime();
-        } else {
-            terminal = o_exam.getEndTime();
-        }
-
-        if (begin.isAfter(terminal)) {
-            ret = false;
-        }
-        System.out.println(String.valueOf(begin));
-        System.out.println(String.valueOf(terminal));
-        return ret;
+        System.out.println(st1);
+        System.out.println(st2);
+        return false;
     }
 }
