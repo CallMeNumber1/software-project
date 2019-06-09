@@ -1,5 +1,6 @@
 package com.example.softwareproject.service;
 
+
 import com.example.softwareproject.entity.Exam;
 import com.example.softwareproject.repository.ExamRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * @program: software-project
+ * @description: 考试业务逻辑处理
+ * @author: zhanyeye
+ * @create: 2019-06-09 10:38
+ */
 @Service
 @Slf4j
 @Transactional
