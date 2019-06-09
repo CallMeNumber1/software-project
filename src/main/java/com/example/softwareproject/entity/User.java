@@ -41,4 +41,10 @@ public class User {
 
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime insertTime;
+
+    public User(String name, int authority) {
+        this.name = name;
+        this.authority = authority;
+    }
+
 }

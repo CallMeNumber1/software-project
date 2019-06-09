@@ -1,38 +1,43 @@
 package com.example.softwareproject.service;
 
 
+import com.example.softwareproject.component.TimeUtils;
 import com.example.softwareproject.entity.Exam;
+import com.example.softwareproject.entity.ExamDetail;
+import com.example.softwareproject.entity.User;
+import com.example.softwareproject.repository.ExamDetailRepository;
 import com.example.softwareproject.repository.ExamRepository;
+import com.example.softwareproject.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * @program: software-project
- * @description: 考试业务逻辑处理
- * @author: zhanyeye
- * @create: 2019-06-09 10:38
- */
+
 @Service
 @Slf4j
 @Transactional
 public class ExamService {
     @Autowired
     private ExamRepository examRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ExamDetailRepository examDetailRepository;
+    @Autowired
+    private TimeUtils timeUtils;
 
     public Exam addExam(Exam newExam) {
         List<Exam> exams = examRepository.listByLoc(newExam.getLocation());
         for (Exam e : exams) {
-            if (isConflict(e, newExam)) {
+            if (timeUtils.isTimeConflict(e, newExam)) {
                 log.debug("-------考试安排冲突--------");
                 // 此处应该抛出异常，让客户端知道发生了冲突
-                return null;
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "考试安排冲突");
             }
         }
         log.debug("-----正常安排--------");
@@ -41,33 +46,57 @@ public class ExamService {
         newExam = examRepository.refresh(newExam);
         return newExam;
     }
-    public boolean isConflict(Exam e1, Exam e2) {
-        LocalDateTime st1 = e1.getBeginTime(), et1 = e1.getEndTime();
-        LocalDateTime st2 = e2.getBeginTime(), et2 = e2.getEndTime();
-        // 排除开始/结束时间相同或同一时间的情况
-        if (st1.isEqual(st2) || et1.isEqual(et2)) return true;
-        if (st1.isBefore(st2)) {
-            if (et1.isAfter(st2)) return true;
-        } else {
-            if (st1.isBefore(et2)) return true;
-        }
-        return false;
-    }
-    public void isConf() {
-        Exam e1 = new Exam();
-        Exam e2 = new Exam();
-        e1.setBeginTime(LocalDateTime.of(2019, 6, 8, 14, 0, 0));
-        e1.setEndTime(LocalDateTime.of(2019, 6, 8, 16, 0, 0));
-        e2.setBeginTime(LocalDateTime.of(2019, 6, 8, 15, 0, 0));
-        e2.setEndTime(LocalDateTime.of(2019, 6, 8, 17, 0, 0));
 
-        Duration dur = Duration.between(e1.getEndTime(), e2.getBeginTime());
-        long dif = dur.toHours();
-        if (dif < 0) {
-            System.out.println("时间冲突");
-        } else {
-            System.out.println("正常安排");
-        }
-        System.out.println(dif);
+    public void rmExam(int eid) {
+        examRepository.deleteById(eid);
     }
+
+    public Exam findExam(int eid) {
+        return examRepository.findById(eid).get();
+    }
+
+    public Exam modifyExam(Exam exam) {
+        return examRepository.save(exam);
+    }
+
+
+    public ExamDetail setExamDetail(int uid, int eid) {
+        User user = userRepository.findById(uid).get();
+        Exam exam = examRepository.findById(eid).get();
+
+        if (exam.getNumbersOfTeacher() == examDetailRepository.coutByEid(eid)) { //考试需要监考人数 和 已分配人数 比较
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "该考试监考人员已经分配完成,无需再分配！");
+        }
+
+        List<Exam> examList = examDetailRepository.listExamByTeacher(uid); //uid 老师的所有监考考试
+        int conflictCount = 0; //记录exam 和 uid 老师已分派考试的时间的冲突次数：冲突达到 2 则不能再分配了
+        String conflictExam; //记录和哪门考试冲突
+        
+        for(Exam e : examList) {
+            if (timeUtils.isTimeConflict(e, exam)) {
+                log.debug(e.getName()+ "????");
+                conflictCount++;
+                conflictExam = e.getName();
+                if (conflictCount == 2) {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "同一时间同一教师只能执行 2 次不同监考！");
+                }
+            }
+        }
+
+        ExamDetail examDetail = new ExamDetail();
+        examDetail.setTeacher(user);
+        examDetail.setExam(exam);
+        examDetail = examDetailRepository.save(examDetail);
+
+//        throw new ResponseStatusException(HttpStatus.CONFLICT, user.getName() + "教师监考的"+ conflictExam + "和" + exam.setName() + "冲突");
+
+        return examDetailRepository.refresh(examDetail);
+    }
+
+
+    public void rmExamDetail(int edid) {
+        examDetailRepository.deleteById(edid);
+    }
+
+
 }
