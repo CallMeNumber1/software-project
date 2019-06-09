@@ -19,16 +19,17 @@ public class Exam {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime beginTime;  //开始时间
-    @JsonFormat(pattern = "HH:mm:ss")
-    private LocalDateTime endTime;    //结束时间
-    private String location;          //考试教室
-    private int numbersOfPeople;      //人数
 
     @JsonIgnore
     @OneToMany(mappedBy = "exam", cascade = CascadeType.REMOVE)
-    private List<TeacherExam> teacherExams;
+    private List<ExamDetail> examDetails;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime beginTime;  //开始时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime endTime;    //结束时间
+    private String location;          //考试教室
+    private int numbersOfPeople;      //人数
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)

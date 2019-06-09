@@ -18,6 +18,10 @@ public class SoftwareProjectApplicationTests {
     @Autowired
     TimeUtils timeUtils;
 
+    @Test
+    public void datebaseinit_test() {
+
+    }
 
     @Test
     public void min_max_Time_test() {

@@ -15,15 +15,23 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
-public class Teacher {
-    //定义静态常量表示教师权限
-    public static final int USER_AUTHORITY = 0;
-    public static final int ADMIN_AUTHORITY = 1;
-
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "teacher",cascade = CascadeType.REMOVE)
+    private List<ExamDetail> examDetails;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<TaskDetail> taskDetails;
+
+    //定义静态常量表示教师权限
+    public static final int USER_AUTHORITY = 0;
+    public static final int ADMIN_AUTHORITY = 1;
+
     private int authority = USER_AUTHORITY;  //用户权限
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
@@ -31,15 +39,6 @@ public class Teacher {
     private int title = 1;  //职称
     private String description;  //描述
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "teacher",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
-    private List<TeacherExam> teacherExams;
-
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.REMOVE)
-    private List<TeacherTask> teacherTasks;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime insertTime;
-
 }
