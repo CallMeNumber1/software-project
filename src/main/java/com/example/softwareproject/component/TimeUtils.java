@@ -25,7 +25,7 @@ public class TimeUtils {
 
     //比较考试的时间是否冲突,传入的函数是2个Exam对象
     public boolean isTimeConflict (Exam e1, Exam e2) {
-        LocalDateTime LastStartTime = maxTime(e1.getBeginTime(), e2.getEndTime());     //最晚开始时间
+        LocalDateTime LastStartTime = maxTime(e1.getBeginTime(), e2.getBeginTime());   //最晚开始时间
         LocalDateTime EarliestFinishTime = minTime(e1.getEndTime(), e2.getEndTime());  //最早结束时间
         return LastStartTime.compareTo(EarliestFinishTime) > 0 ? true : false;
     }
