@@ -12,7 +12,7 @@ Content-Type: application/json
   "name": "test",
   "beginTime": "2019-06-06 13:00:00",
   "endTime": "2019-06-06 15:00:00",
-  "location": "002",
+  "location": "007",
   "numbersOfTeacher": 2
 }
 

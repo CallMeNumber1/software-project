@@ -30,7 +30,7 @@ public class SoftwareProjectApplicationTests {
 
     @Test
     public void test1() {
-        User u4 = new User("test",User.USER_AUTHORITY);
+        User u4 = new User("test","9999","123456",User.USER_AUTHORITY);
         userRepository.save(u4);
     }
 

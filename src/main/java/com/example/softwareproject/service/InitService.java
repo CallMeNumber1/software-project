@@ -6,6 +6,7 @@ import com.example.softwareproject.repository.ExamDetailRepository;
 import com.example.softwareproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -16,12 +17,13 @@ import java.time.LocalDateTime;
  * @create: 2019-06-09 10:32
  */
 @Service
+@Transactional  //要加事务，不然 refresh() 时会not in Mangaged
 public class InitService {
 
     @Autowired
     private ExamService examService;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     public void init_Exam() {
         Exam e1 = new Exam();
@@ -48,14 +50,14 @@ public class InitService {
     }
 
     public void init_Teacher() {
-        User u1 = new User("black",User.USER_AUTHORITY);
-        User u2 = new User("while",User.USER_AUTHORITY);
-        User u3 = new User("belly",User.USER_AUTHORITY);
-        User u4 = new User("monk",User.USER_AUTHORITY);
-        userRepository.save(u1);
-        userRepository.save(u2);
-        userRepository.save(u3);
-        userRepository.save(u4);
+        User u1 = new User("black","1001","123456",User.USER_AUTHORITY);
+        User u2 = new User("while","1002","123456",User.USER_AUTHORITY);
+        User u3 = new User("belly","1003","123456",User.USER_AUTHORITY);
+        User u4 = new User("monk","1004","123456",User.USER_AUTHORITY);
+        userService.addUser(u1);
+        userService.addUser(u2);
+        userService.addUser(u3);
+        userService.addUser(u4);
     }
 
     public void init_ExamDetail() {
