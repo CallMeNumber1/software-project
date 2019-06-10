@@ -22,6 +22,6 @@ GET http://localhost:8080/api/admin/exam_details/7/1
 
 ###
 
-DELETE http://localhost:8080/api/admin/exam_details/26
+DELETE http://localhost:8080/api/admin/exam_details/28
 
 ###

@@ -66,13 +66,12 @@ public class ExamService {
         Exam exam = examRepository.findById(eid).get();
 
         //考试需要监考人数 和 已分配人数 比较
-        log.debug(eid + "");
-        log.debug(examDetailRepository.coutByEid(eid) + " ");
-        if (exam.getNumbersOfTeacher() <= examDetailRepository.coutByEid(eid)) {
+        int assignedCnt = examDetailRepository.coutByEid(eid);
+        if (exam.getNumbersOfTeacher() <= assignedCnt) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "该考试监考人员已经分配完成,无需再分配！");
         }
 
-        List<Exam> examList = examDetailRepository.listExamByTeacher(uid); //uid 老师的所有监考考试
+        List<Exam> examList = examDetailRepository.listExamByTid(uid); //uid 老师的所有监考考试
         int conflictCount = 0; //记录exam 和 uid 老师已分派考试的时间的冲突次数：冲突达到 2 则不能再分配了
         Exam conflictExam = null; //记录和哪门考试冲突
 
@@ -93,6 +92,10 @@ public class ExamService {
         examDetail.setExam(exam);
         examDetail = examDetailRepository.save(examDetail);
 
+        //如果这门考试已经分配完成 -> 发送信息
+        if (exam.getNumbersOfTeacher() == assignedCnt + 1) {
+            sendMessage(exam);
+        }
 
         if (conflictCount == 0) {
             return Map.of("examDetail",examDetailRepository.refresh(examDetail));
@@ -100,6 +103,28 @@ public class ExamService {
             String warning = generateWarningMessage(user, conflictExam, exam);
             return Map.of("examDetail",examDetailRepository.refresh(examDetail), "warning", warning);
         }
+    }
+
+    //在后端打印log,模拟发送信息
+    private void sendMessage(Exam exam) {
+        String message = "";
+        message = message + "考试时间：" + exam.getBeginTime() + " - " + exam.getEndTime();
+        message = message + "\n考试地点: " + exam.getLocation() + "\n监考人员信息：\n";
+
+        List<User> userlist = examDetailRepository.listUserByEid(exam.getId());
+        for (User u : userlist) {
+            List<Exam> examList = examDetailRepository.listExamByTid(u.getId());
+            int cnt = 0;
+            for (Exam e : examList) {
+                if (timeUtils.isTimeConflict(e, exam)) {
+                    cnt++;
+                }
+            }
+            message = message + u.getName() + " 监考次数： " + cnt + "\n";
+        }
+        log.debug(message);
+
+
     }
 
     //生成冲突警告信息，返回String
