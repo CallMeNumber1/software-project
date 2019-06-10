@@ -1,6 +1,8 @@
 package com.example.softwareproject;
 
 
+import com.example.softwareproject.entity.User;
+import com.example.softwareproject.repository.UserRepository;
 import com.example.softwareproject.service.ExamService;
 import com.example.softwareproject.component.TimeUtils;
 import com.example.softwareproject.entity.Exam;
@@ -23,6 +25,14 @@ public class SoftwareProjectApplicationTests {
     private TimeUtils timeUtils;
     @Autowired
     private InitService initService;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Test
+    public void test1() {
+        User u4 = new User("test",User.USER_AUTHORITY);
+        userRepository.save(u4);
+    }
 
     @Test
     public void init() {

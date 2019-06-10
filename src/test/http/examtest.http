@@ -9,10 +9,19 @@ POST http://localhost:8080/api/admin/exams
 Content-Type: application/json
 
 {
-  "name": "软件质量保证与测试",
-  "beginTime": "2019-06-06 04:00:00",
-  "endTime": "2019-06-06 06:00:00",
-  "location": "925"
+  "name": "test",
+  "beginTime": "2019-06-06 13:00:00",
+  "endTime": "2019-06-06 15:00:00",
+  "location": "002",
+  "numbersOfTeacher": 2
 }
+
+###
+
+GET http://localhost:8080/api/admin/exam_details/7/1
+
+###
+
+DELETE http://localhost:8080/api/admin/exam_details/26
 
 ###

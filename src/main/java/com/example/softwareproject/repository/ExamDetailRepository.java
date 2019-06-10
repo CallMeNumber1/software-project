@@ -15,7 +15,7 @@ public interface ExamDetailRepository extends CustomizedRepository<ExamDetail, I
     @Query("select ed.exam from ExamDetail ed where ed.teacher.id = :tid")
     List<Exam> listExamByTeacher(@Param("tid") int tid);
 
-    @Query("select count(ed) from ExamDetail ed where ed.id = :eid")
+    @Query("select count(ed) from ExamDetail ed where ed.exam.id = :eid")
     int coutByEid(@Param("eid")int eid);
 
 }

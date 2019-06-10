@@ -36,12 +36,15 @@ public class ExamController {
         examService.rmExam(eid);
     }
 
-    @GetMapping("/exam_details/{uid}/{eid}")
-    public  Map getExamDetail(@PathVariable int uid, @PathVariable int eid) {
-        ExamDetail examDetail =  examService.setExamDetail(uid, eid);
-        return Map.of("examDetail",examDetail);
+    @GetMapping("/exam_details/{eid}/{uid}")
+    public Map getExamDetail(@PathVariable int eid, @PathVariable int uid) {
+        return examService.setExamDetail(eid, uid);
     }
 
+    @DeleteMapping("/exam_details/{edid}")
+    public void DeleteExamDetail(@PathVariable int edid) {
+        examService.rmExamDetail(edid);
+    }
 
 
 }

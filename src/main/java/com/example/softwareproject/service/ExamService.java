@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -60,23 +61,27 @@ public class ExamService {
     }
 
 
-    public ExamDetail setExamDetail(int uid, int eid) {
+    public Map setExamDetail(int eid, int uid) {
         User user = userRepository.findById(uid).get();
         Exam exam = examRepository.findById(eid).get();
 
-        if (exam.getNumbersOfTeacher() == examDetailRepository.coutByEid(eid)) { //考试需要监考人数 和 已分配人数 比较
+        //考试需要监考人数 和 已分配人数 比较
+        log.debug(eid + "");
+        log.debug(examDetailRepository.coutByEid(eid) + " ");
+        if (exam.getNumbersOfTeacher() <= examDetailRepository.coutByEid(eid)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "该考试监考人员已经分配完成,无需再分配！");
         }
 
         List<Exam> examList = examDetailRepository.listExamByTeacher(uid); //uid 老师的所有监考考试
         int conflictCount = 0; //记录exam 和 uid 老师已分派考试的时间的冲突次数：冲突达到 2 则不能再分配了
-        String conflictExam; //记录和哪门考试冲突
-        
+        Exam conflictExam = null; //记录和哪门考试冲突
+
+        //循环比较待插入Exam 和老师监考的冲突次数
         for(Exam e : examList) {
+            log.debug(e.getName());
             if (timeUtils.isTimeConflict(e, exam)) {
-                log.debug(e.getName()+ "????");
                 conflictCount++;
-                conflictExam = e.getName();
+                conflictExam = e;
                 if (conflictCount == 2) {
                     throw new ResponseStatusException(HttpStatus.CONFLICT, "同一时间同一教师只能执行 2 次不同监考！");
                 }
@@ -88,12 +93,23 @@ public class ExamService {
         examDetail.setExam(exam);
         examDetail = examDetailRepository.save(examDetail);
 
-//        throw new ResponseStatusException(HttpStatus.CONFLICT, user.getName() + "教师监考的"+ conflictExam + "和" + exam.setName() + "冲突");
 
-        return examDetailRepository.refresh(examDetail);
+        if (conflictCount == 0) {
+            return Map.of("examDetail",examDetailRepository.refresh(examDetail));
+        } else {
+            String warning = generateWarningMessage(user, conflictExam, exam);
+            return Map.of("examDetail",examDetailRepository.refresh(examDetail), "warning", warning);
+        }
     }
 
+    //生成冲突警告信息，返回String
+    private String generateWarningMessage(User u, Exam e1, Exam e2) {
+        return u.getName() + "教师监考的"
+                + e1.getName() + " : " + e1.getBeginTime().toString() + " - " + e1.getEndTime().toString()
+                + " 和 " + e2.getName() + " : "+ e2.getBeginTime() + " - " + e2.getEndTime() + "冲突";
+    }
 
+    //删除ExamDetail
     public void rmExamDetail(int edid) {
         examDetailRepository.deleteById(edid);
     }

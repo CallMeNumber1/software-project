@@ -2,6 +2,7 @@ package com.example.softwareproject;
 
 import com.example.softwareproject.component.TimeUtils;
 import com.example.softwareproject.entity.Exam;
+import com.example.softwareproject.repository.ExamDetailRepository;
 import com.example.softwareproject.service.ExamService;
 import com.example.softwareproject.service.InitService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,14 @@ public class ExamServiceTests {
     private TimeUtils timeUtils;
     @Autowired
     private InitService initService;
+    @Autowired
+    ExamDetailRepository examDetailRepository;
+
+
+    @Test
+    public void testCountById() {
+        log.debug(examDetailRepository.coutByEid(7) + "");
+    }
 
     @Test
     public void init() {
