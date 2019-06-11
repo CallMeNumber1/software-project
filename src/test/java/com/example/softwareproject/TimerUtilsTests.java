@@ -3,7 +3,7 @@ package com.example.softwareproject;
 import com.example.softwareproject.component.TimeUtils;
 import com.example.softwareproject.entity.Exam;
 import com.example.softwareproject.service.ExamService;
-import com.example.softwareproject.service.InitService;
+import com.example.softwareproject.service.AddDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ public class TimerUtilsTests {
     @Autowired
     private TimeUtils timeUtils;
     @Autowired
-    private InitService initService;
+    private AddDataService addDataService;
 
     @Test
     public void isTimeConflictTest() {

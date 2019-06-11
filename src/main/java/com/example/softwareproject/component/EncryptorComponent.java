@@ -5,6 +5,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
  * @create: 2019-06-08 13:58
  */
 
+@Slf4j
 @Component
 public class EncryptorComponent {
     @Value("${my.secretkey}")
@@ -29,7 +31,7 @@ public class EncryptorComponent {
     private String salt;
     @Autowired
     private ObjectMapper mapper;
-    //加密
+    // 加密
     public String encrypt(Map payload) {
         try {
             String json = mapper.writeValueAsString(payload);
@@ -38,15 +40,14 @@ public class EncryptorComponent {
         }
         return null;
     }
-
-    //解密
+    // 解密
     public Map<String, Object> decrypt(String encryptString) {
         try {
             String json = Encryptors.text(secretKey, salt).decrypt(encryptString);
             return mapper.readValue(json, Map.class);
         } catch (Exception e) {
             //若反序列化时抛异常，则说明 token 是伪造的，未登录！
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"未登录");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "未登录");
         }
     }
 }
