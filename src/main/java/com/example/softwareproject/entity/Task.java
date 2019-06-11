@@ -25,7 +25,7 @@ public class Task {
     private String description;
 
     @OneToMany(mappedBy = "task")
-    private List<TeacherTask> teacherTasks;
+    private List<TaskDetail> taskDetails;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime deadLine;
