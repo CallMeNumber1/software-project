@@ -23,13 +23,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @NoArgsConstructor
 //创建联合约束
-@Table(name = "TeacherExam", uniqueConstraints = {@UniqueConstraint(columnNames={"teacher_id", "exam_id"})})
-public class TeacherExam {
+@Table(name = "ExamDetail", uniqueConstraints = {@UniqueConstraint(columnNames={"teacher_id", "exam_id"})})
+public class ExamDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
-    private Teacher teacher;
+    private User teacher;
     @ManyToOne
     private Exam exam;
 

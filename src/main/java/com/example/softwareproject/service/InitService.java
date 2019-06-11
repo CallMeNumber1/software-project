@@ -2,9 +2,9 @@ package com.example.softwareproject.service;
 
 /**
  * @program: software-project
- * @description: 考试业务逻辑处理
+ * @description: 初始化数据
  * @author: zhanyeye
- * @create: 2019-06-09 10:38
+ * @create: 2019-06-09 10:32
  */
-public class ExamService {
+public class InitService {
 }
