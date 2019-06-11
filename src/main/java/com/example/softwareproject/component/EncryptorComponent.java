@@ -25,7 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class EncryptorComponent {
     @Value("${my.secretkey}")
     private String secretKey;
-    @Value("${my.salt")
+    @Value("${my.salt}")
     private String salt;
     @Autowired
     private ObjectMapper mapper;

@@ -36,7 +36,7 @@ public class AdminController {
         userService.rmUser(uid);
     }
 
-    @PutMapping("/users")
+    @PatchMapping("/users")
     public Map modifyUser(@RequestBody User user) {
         User u = userService.modifyUser(user);
         return Map.of("user", u);
