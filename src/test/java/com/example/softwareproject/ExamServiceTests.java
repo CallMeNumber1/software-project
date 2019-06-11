@@ -4,15 +4,13 @@ import com.example.softwareproject.component.TimeUtils;
 import com.example.softwareproject.entity.Exam;
 import com.example.softwareproject.repository.ExamDetailRepository;
 import com.example.softwareproject.service.ExamService;
-import com.example.softwareproject.service.InitService;
+import com.example.softwareproject.service.AddDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.LocalDateTime;
 
 /**
  * @program: software-project
@@ -29,7 +27,7 @@ public class ExamServiceTests {
     @Autowired
     private TimeUtils timeUtils;
     @Autowired
-    private InitService initService;
+    private AddDataService addDataService;
     @Autowired
     ExamDetailRepository examDetailRepository;
 
@@ -41,9 +39,9 @@ public class ExamServiceTests {
 
     @Test
     public void init() {
-        initService.init_Exam();
-        initService.init_Teacher();
-        initService.init_ExamDetail();
+        addDataService.init_Exam();
+        addDataService.init_Teacher();
+        addDataService.init_ExamDetail();
     }
 
     @Test

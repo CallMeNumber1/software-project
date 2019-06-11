@@ -1,0 +1,70 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+# 以管理员身份添加考试
+POST http://localhost:8080/api/admin/invigilation/exams
+token:ae6b9dbceef4b0428313523ad2de74397cf6a31e88414ede957d4add59be71305d758b926c1fce69b1406e01bccb983b
+Content-Type: application/json
+
+{
+  "name": "test4",
+  "beginTime": "2019-06-06 13:00:00",
+  "endTime": "2019-06-06 15:00:00",
+  "location": "003",
+  "numbersOfTeacher": 2
+}
+
+###
+
+# 以管理员身份修改考试
+PATCH http://localhost:8080/api/admin/invigilation/exams/1
+token:ae6b9dbceef4b0428313523ad2de74397cf6a31e88414ede957d4add59be71305d758b926c1fce69b1406e01bccb983b
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "modify",
+  "beginTime": "2019-06-06 13:00:00",
+  "endTime": "2019-06-06 15:00:00",
+  "location": "003",
+  "numbersOfTeacher": 2
+}
+
+###
+
+# 以管理员身份删除考试
+DELETE http://localhost:8080/api/admin/invigilation/exams/4
+token:ae6b9dbceef4b0428313523ad2de74397cf6a31e88414ede957d4add59be71305d758b926c1fce69b1406e01bccb983b
+
+###
+
+# 以管理员身份分配考试监考
+GET http://localhost:8080/api/admin/invigilation/exam_details/2/2
+token:ae6b9dbceef4b0428313523ad2de74397cf6a31e88414ede957d4add59be71305d758b926c1fce69b1406e01bccb983b
+
+###
+
+# 以管理员身份删除考试监考
+DELETE http://localhost:8080/api/admin/invigilation/exam_details/1
+token:ae6b9dbceef4b0428313523ad2de74397cf6a31e88414ede957d4add59be71305d758b926c1fce69b1406e01bccb983b
+
+###
+
+# 普通用户尝试管理员操作 : 403 无权限
+POST http://localhost:8080/api/admin/invigilation/exams
+token: ea65098d334033f3391d50c76686329fc4dac73cee35367d63e3958d71c9c19486027abb63408656e66826c52c5ee734
+Content-Type: application/json
+
+{
+  "name": "test?",
+  "beginTime": "2019-06-06 13:00:00",
+  "endTime": "2019-06-06 15:00:00",
+  "location": "005",
+  "numbersOfTeacher": 2
+}
+
+###

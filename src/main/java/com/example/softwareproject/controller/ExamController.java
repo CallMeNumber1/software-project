@@ -39,7 +39,7 @@ public class ExamController {
      * @param exam
      * @return Map
      */
-    @PatchMapping("/exams")
+    @PatchMapping("/exams/{eid}")
     public Map putExam(@RequestBody Exam exam) {
         Exam newExam = examService.modifyExam(exam);
         return Map.of("exam", newExam);
