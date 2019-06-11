@@ -20,6 +20,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    @Column(unique = true)
+    private String account; //账号
 
     @JsonIgnore
     @OneToMany(mappedBy = "teacher",cascade = CascadeType.REMOVE)
@@ -41,4 +43,12 @@ public class User {
 
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime insertTime;
+
+    public User(String name,String account, String password, int authority) {
+        this.name = name;
+        this.account = account;
+        this.password = password;
+        this.authority = authority;
+    }
+
 }

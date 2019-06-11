@@ -1,7 +1,12 @@
 package com.example.softwareproject;
 
+
+import com.example.softwareproject.entity.User;
+import com.example.softwareproject.repository.UserRepository;
+import com.example.softwareproject.service.ExamService;
 import com.example.softwareproject.component.TimeUtils;
 import com.example.softwareproject.entity.Exam;
+import com.example.softwareproject.service.InitService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,14 +19,26 @@ import java.time.LocalDateTime;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class SoftwareProjectApplicationTests {
-
     @Autowired
-    TimeUtils timeUtils;
+    private ExamService examService;
+    @Autowired
+    private TimeUtils timeUtils;
+    @Autowired
+    private InitService initService;
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
-    public void datebaseinit_test() {
-
+    public void test1() {
+        User u4 = new User("test","9999","123456",User.USER_AUTHORITY);
+        userRepository.save(u4);
     }
+
+    @Test
+    public void init() {
+        initService.init_Exam();
+    }
+
 
     @Test
     public void min_max_Time_test() {
@@ -31,7 +48,6 @@ public class SoftwareProjectApplicationTests {
         log.debug(timeUtils.minTime(t1, t2).toString() );
         log.debug(t1.compareTo(t2) + "\n" +  t2.compareTo(t1) + "\n" +  t1.compareTo(t1));
     }
-
     @Test
     public void isTimeConflict_test() {
         Exam e1 = new Exam();
@@ -42,5 +58,6 @@ public class SoftwareProjectApplicationTests {
         e2.setEndTime(LocalDateTime.of(2019,6, 12, 8, 0));
         log.debug(timeUtils.isTimeConflict(e1, e2) + "");
     }
+    
 
 }

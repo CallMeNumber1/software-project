@@ -25,7 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class EncryptorComponent {
     @Value("${my.secretkey}")
     private String secretKey;
-    @Value("${my.salt")
+    @Value("${my.salt}")
     private String salt;
     @Autowired
     private ObjectMapper mapper;
@@ -45,6 +45,7 @@ public class EncryptorComponent {
             String json = Encryptors.text(secretKey, salt).decrypt(encryptString);
             return mapper.readValue(json, Map.class);
         } catch (Exception e) {
+            //若反序列化时抛异常，则说明 token 是伪造的，未登录！
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"未登录");
         }
     }

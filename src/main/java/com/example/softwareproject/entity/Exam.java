@@ -31,10 +31,18 @@ public class Exam {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;    //结束时间
     private String location;          //考试教室
-    private int numbersOfPeople;      //人数
+    private int numbersOfTeacher = 5;      //人数
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime insertTime;
+
+    public Exam(String name, LocalDateTime beginTime, LocalDateTime endTime, String location, int numbersOfTeacher) {
+        this.name = name;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.location = location;
+        this.numbersOfTeacher = numbersOfTeacher;
+    }
 
 }
