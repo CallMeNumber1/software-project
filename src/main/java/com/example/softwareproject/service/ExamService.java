@@ -72,6 +72,7 @@ public class ExamService {
         for (int i = 0; i < uids.length; i++) {
             User u = userRepository.findById(uids[i]).get();
             Exam e = examRepository.findById(eid).get();
+            u.setInvigilationCnt(u.getAuthority() + 1); //监考次数加1
             ExamDetail examDetail = new ExamDetail();
             examDetail.setExam(e);
             examDetail.setTeacher(u);

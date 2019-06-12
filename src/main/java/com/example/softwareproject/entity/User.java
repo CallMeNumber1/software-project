@@ -40,6 +40,7 @@ public class User {
     private String phone;
     private int title = 1;  //职称
     private String description;  //描述
+    private int invigilationCnt = 0;
 
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime insertTime;
