@@ -22,6 +22,8 @@ public class User {
     private String name;
     @Column(unique = true)
     private String account; //账号
+    private int invigilationCnt = 0;
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "teacher",cascade = CascadeType.REMOVE)
