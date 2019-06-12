@@ -1,0 +1,53 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+###
+
+# 管理员身份添加任务
+POST http://localhost:8080/api/admin/tasks
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+Content-Type: application/json
+
+{
+  "title": "课设不结 奋斗不止",
+  "description": "我爱做课设，课设使得我快乐",
+  "deadLine": "2019-06-11 20:00"
+}
+
+###
+
+# 管理员身份修改任务信息
+PATCH http://localhost:8080/api/admin/tasks
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+Content-Type: application/json
+
+{
+  "id": 7,
+  "title": "课设不结 奋斗不止",
+  "description": "我爱做课设，课设使得我快乐",
+  "deadLine": "2019-06-11 20:00"
+}
+
+###
+
+# 管理员身份删除指定任务
+DELETE http://localhost:8080/api/admin/tasks/3
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+
+###
+
+# 管理员身份分配任务
+PUT http://localhost:8080/api/admin/tasks/2/1
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+
+###
+
+# 管理员身份删除指定的任务分配
+DELETE http://localhost:8080/api/admin/taskDetails/4
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+
+###
