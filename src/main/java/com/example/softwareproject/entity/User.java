@@ -2,6 +2,7 @@ package com.example.softwareproject.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
+@JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
