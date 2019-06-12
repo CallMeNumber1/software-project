@@ -21,9 +21,9 @@ public class UserService {
     UserRepository userRepository;
 
     public User addUser(User user) {
-        user.setInvigilationCnt(user.getAuthority() + 1); //监考次数加1
         User u = userRepository.save(user);
         return userRepository.refresh(u );
+
     }
 
     public User getUser(String account) {
