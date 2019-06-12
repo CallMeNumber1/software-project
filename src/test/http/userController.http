@@ -1,0 +1,33 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+###
+
+# 用户对分配给他的指定任务进行回复
+PATCH http://localhost:8080/api/users/1/tasks/2
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+Content-Type: application/json
+
+{
+  "responseContent": "这是我测试延时的最新回复！"
+}
+
+###
+
+# 用户获取分配给他的任务
+GET http://localhost:8080/api/users/1
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+
+###
+
+# 用户获取分配的某一任务的所有用户信息
+GET http://localhost:8080/api/tasks/1
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+
+###
+
+

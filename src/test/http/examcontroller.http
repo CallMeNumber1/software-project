@@ -43,7 +43,7 @@ token:ae6b9dbceef4b0428313523ad2de74397cf6a31e88414ede957d4add59be71305d758b926c
 ###
 
 # 以管理员身份分配考试监考
-GET http://localhost:8080/api/admin/invigilation/exam_details/2/2
+GET http://localhost:8080/api/admin/invigilation/exam_details/1/1
 token:ae6b9dbceef4b0428313523ad2de74397cf6a31e88414ede957d4add59be71305d758b926c1fce69b1406e01bccb983b
 
 ###
