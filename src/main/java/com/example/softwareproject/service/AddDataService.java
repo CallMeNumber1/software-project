@@ -65,9 +65,9 @@ public class AddDataService {
     }
 
     public void init_ExamDetail() {
-        examService.setExamDetail(1, 1);
-        examService.setExamDetail(2, 2);
-        examService.setExamDetail(3, 3);
+//        examService.setExamDetail(1, 1);
+//        examService.setExamDetail(2, 2);
+//        examService.setExamDetail(3, 3);
     }
 
 }
