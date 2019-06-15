@@ -31,7 +31,7 @@ public class ExamController {
     @PostMapping("/exams")
     public Map postExam(@RequestBody Exam exam) {
         examService.addExam(exam);
-        return Map.of("exam", exam);
+        return Map.of("exams", examService.listExams());
     }
 
     /**
