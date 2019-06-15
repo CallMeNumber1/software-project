@@ -40,16 +40,34 @@ Content-Type: application/json
 DELETE http://localhost:8080/api/admin/invigilation/exams/4
 token:ae6b9dbceef4b0428313523ad2de74397cf6a31e88414ede957d4add59be71305d758b926c1fce69b1406e01bccb983b
 
+
+###
+
+# 以管理员身份获取分配情况
+GET http://localhost:8080/api/admin/invigilation/exam_details/3
+token:ae6b9dbceef4b0428313523ad2de74397cf6a31e88414ede957d4add59be71305d758b926c1fce69b1406e01bccb983b
+
+
+
+
 ###
 
 # 以管理员身份分配考试监考
-GET http://localhost:8080/api/admin/invigilation/exam_details/2/2
+POST http://localhost:8080/api/admin/invigilation/exam_details/2
 token:ae6b9dbceef4b0428313523ad2de74397cf6a31e88414ede957d4add59be71305d758b926c1fce69b1406e01bccb983b
+Content-Type: application/json
+
+[1, 2, 3]
+
+# [{"id": 1}, {"id" : 2}, {"id": 3}]
+
+
+
 
 ###
 
 # 以管理员身份删除考试监考
-DELETE http://localhost:8080/api/admin/invigilation/exam_details/1
+DELETE http://localhost:8080/api/admin/invigilation/exam_details/2
 token:ae6b9dbceef4b0428313523ad2de74397cf6a31e88414ede957d4add59be71305d758b926c1fce69b1406e01bccb983b
 
 ###
