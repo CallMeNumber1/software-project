@@ -28,7 +28,7 @@ public class UserController {
      * @param uid
      * @return
      */
-    @GetMapping("/users/{uid}")
+    @GetMapping("/users/{uid}/tasks")
     public Map getTaskDetail(@PathVariable int uid) {
         return Map.of("taskDetails", userService.getTaskDetails(uid));
     }
