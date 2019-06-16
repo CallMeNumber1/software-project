@@ -41,9 +41,11 @@ token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0f
 ###
 
 # 管理员身份分配任务
-PUT http://localhost:8080/api/admin/tasks/2/1
+POST http://localhost:8080/api/admin/tasks/2
 token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+Content-Type: application/json
 
+[1, 2, 3]
 ###
 
 # 管理员身份删除指定的任务分配

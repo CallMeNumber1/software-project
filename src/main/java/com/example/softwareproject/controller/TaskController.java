@@ -37,12 +37,12 @@ public class TaskController {
     /**
      * 管理员将任务分配给指定用户
      * @param tid
-     * @param uid
      * @return
      */
-    @PutMapping("/tasks/{tid}/{uid}")
-    public Map allocateTask(@PathVariable int tid, @PathVariable int uid) {
-        return Map.of("taskDetail", taskService.allocate(uid, tid));
+    @PostMapping("/tasks/{tid}")
+    public void allocateTask(@PathVariable int tid, @RequestBody int[] uids) {
+        taskService.allocate(tid, uids);
+        //return Map.of("taskDetail", taskService.allocate(uid, tid));
     }
 
     /**

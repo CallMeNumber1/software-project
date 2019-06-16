@@ -43,15 +43,25 @@ public class TaskService {
 
     public void rmTask(int tid) {taskRepository.deleteById(tid);}
 
-    public TaskDetail allocate(int uid, int tid){
-        User user = userRepository.findById(uid).get();
+    public void allocate(int tid, int[] uids){
+        Task task = taskRepository.findById(tid).get();
+        for (int i = 0; i < uids.length; i++) {
+            User user = userRepository.findById(uids[i]).get();
+            TaskDetail taskDetail = new TaskDetail();
+            taskDetail.setTask(task);
+            taskDetail.setUser(user);
+            taskDetail.setFinishStatus(3);
+            TaskDetail n_td = taskDetailRepository.save(taskDetail);
+            taskDetailRepository.refresh(n_td);
+        }
+        /*User user = userRepository.findById(uid).get();
         Task task = taskRepository.findById(tid).get();
         TaskDetail taskDetail = new TaskDetail();
         taskDetail.setTask(task);
         taskDetail.setUser(user);
         taskDetail.setFinishStatus(3);
         TaskDetail td = taskDetailRepository.save(taskDetail);
-        return taskDetailRepository.refresh(td);
+        return taskDetailRepository.refresh(td);*/
     }
 
     /**
