@@ -65,10 +65,6 @@ public class AddDataService {
         userService.addUser(u4);
     }
 
-    public void init_Admin() {
-        User admin = new User("black","1020",passwordEncoder.encode("123456"),User.ADMIN_AUTHORITY);
-        userService.addUser(admin);
-    }
 
     public void init_ExamDetail(int eid, int[] array) {
         examService.setExamDetail(eid, array);
@@ -90,9 +86,8 @@ public class AddDataService {
     }
 
     public void init_TaskDetail() {
-        taskService.allocate(2,1);
-        taskService.allocate(1,2);
-        taskService.allocate(2,2);
+        taskService.allocate(1,new int[]{2,3,4});
+        taskService.allocate(2,new int[]{1,2,3,4});
     }
 
 
