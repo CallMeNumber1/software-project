@@ -32,16 +32,22 @@ public class ExamServiceTests {
     ExamDetailRepository examDetailRepository;
 
 
-    @Test
-    public void testCountById() {
-        log.debug(examDetailRepository.coutByEid(7) + "");
-    }
 
     @Test
     public void init() {
         addDataService.init_Exam();
         addDataService.init_Teacher();
-        addDataService.init_ExamDetail();
+        addDataService.init_ExamDetail(1,new int[]{1, 2, 3});
+    }
+
+    @Test
+    public void set_ExamDetail_1() {
+        addDataService.init_ExamDetail(1,new int[]{3});
+    }
+
+    @Test
+    public void set_ExamDetail_2() {
+        addDataService.init_ExamDetail(2,new int[]{3});
     }
 
     @Test
@@ -54,6 +60,11 @@ public class ExamServiceTests {
         Exam exam = examService.findExam(2);
         exam.setName("9999999");
         examService.modifyExam(exam);
+    }
+
+    @Test
+    public void rmExamDetail_test() {
+        examService.rmExamDetail(1);
     }
 
 

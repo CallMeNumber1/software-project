@@ -32,7 +32,7 @@ public class ExamController {
      * @return MAP
      */
     @PostMapping("/exams")
-    public Map postExam(@RequestBody Exam exam) {
+    public Map addExam(@RequestBody Exam exam) {
         examService.addExam(exam);
         return Map.of("exams", examService.listExams());
     }
@@ -43,7 +43,7 @@ public class ExamController {
      * @return Map
      */
     @PatchMapping("/exams/{eid}")
-    public Map putExam(@RequestBody Exam exam) {
+    public Map modifyExam(@RequestBody Exam exam) {
         Exam newExam = examService.modifyExam(exam);
         return Map.of("exam", newExam);
     }
@@ -59,7 +59,8 @@ public class ExamController {
 
 
     /**
-     * 根据即将分配的eid,返回冲突的用户和未冲突的用户，将2个集合封装在map中
+     * 获取eid考试的分配情况
+     * 根据即将分配的eid,返回已选中、未冲突和冲突的用户，将3个集合封装在map中
      * @param eid
      * @return MAP
      */

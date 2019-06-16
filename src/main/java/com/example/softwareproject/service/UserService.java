@@ -40,7 +40,7 @@ public class UserService {
         return userRepository.findUserByAccount(account);
     }
 
-    public List<User> findAllUser() {
+    public List<User> listUsers() {
         return userRepository.findAll();
     }
 

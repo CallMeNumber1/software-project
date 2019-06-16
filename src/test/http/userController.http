@@ -8,7 +8,7 @@
 ###
 
 # 用户对分配给他的指定任务进行回复
-PATCH http://localhost:8080/api/users/1/tasks/2
+PATCH http://localhost:8080/api/users/2/tasks/1
 token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
 Content-Type: application/json
 
@@ -19,7 +19,7 @@ Content-Type: application/json
 ###
 
 # 用户获取分配给他的任务
-GET http://localhost:8080/api/users/1
+GET http://localhost:8080/api/users/1/tasks
 token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
 
 ###
@@ -30,4 +30,21 @@ token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0f
 
 ###
 
+# 用户修改个人信息
+PATCH http://localhost:8080/api/users/1/
+token: 705c562bf14ed6fc2de11cc3522fc999dde85e393a29a083e49f9f5f2ae918dd3e4fe0e2e047821c4acb80dff129cc2b
+Content-Type: application/json
 
+{
+  "id": 100,
+  "name": "test!!!",
+  "account": "3099",
+  "password": "123456"
+}
+
+###
+
+GET http://localhost:8080/api/exam_details
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+
+###

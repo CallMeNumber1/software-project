@@ -8,6 +8,7 @@ import com.example.softwareproject.entity.User;
 import com.example.softwareproject.repository.ExamDetailRepository;
 import com.example.softwareproject.repository.ExamRepository;
 import com.example.softwareproject.repository.UserRepository;
+import com.example.softwareproject.util.Invigilation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,22 +73,58 @@ public class ExamService {
     }
 
     public Map setExamDetail(int eid, int[] uids) {
-        for (int i = 0; i < uids.length; i++) {
-            User u = userRepository.findById(uids[i]).get();
-            Exam e = examRepository.findById(eid).get();
-            u.setInvigilationCnt(u.getAuthority() + 1); //监考次数加1
-            ExamDetail examDetail = new ExamDetail();
-            examDetail.setExam(e);
-            examDetail.setTeacher(u);
-            examDetailRepository.save(examDetail);
+        Exam exam = examRepository.findById(eid).get();
+        if (uids.length != 0) {
+            exam.setStatus(Exam.STATUS_ASSIGNIED); //设置监考已经分配
+        } else {
+            exam.setStatus(Exam.STATUS_UNASSIGNIED); //设置监考未分配
+        }
 
+        examDetailRepository.rmExamDetailByEid(eid); // 先根据eid 将examdetail 删除，以确保数据被更新
+
+        for (int i = 0; i < uids.length; i++) {
+            User user = userRepository.findById(uids[i]).get();
+            user.setInvigilationCnt(user.getInvigilationCnt() + 1); //监考次数加1
+
+            ExamDetail examDetail = new ExamDetail();
+            examDetail.setExam(exam);
+            examDetail.setTeacher(user);
+            examDetailRepository.save(examDetail);
         }
         return null;
     }
 
+    public Map listExamDetails() {
+        List<Invigilation> invigilationList = new ArrayList<>();
+        List<Exam> examList = examRepository.findAll();
+        for (Exam e : examList) {
+            Invigilation invig = new Invigilation();
+            invig.setExam(e);
+            invig.setUserlist(examDetailRepository.listUserByEid(e.getId()));
+            invigilationList.add(invig);
+        }
+        return Map.of("examDetailList", invigilationList);
+    }
+
+    public void rmExamDetail(int eid) {
+        //删除前修改用户监考次数
+        List<User> userList = examDetailRepository.listUserByEid(eid);
+        for (User u : userList) {
+            u.setInvigilationCnt(u.getInvigilationCnt() - 1);
+        }
+        //删除前修改考试监考状态
+        List<Exam> examList = examDetailRepository.listExamByTid(eid);
+        for (Exam e : examList) {
+            e.setStatus(Exam.STATUS_UNASSIGNIED);
+        }
+        examDetailRepository.rmExamDetailByEid(eid);
+    }
+
+    //返回和eid考试 已分配、冲突、不冲突的教师
     public Map getUserStatusByEid(int eid) {
         List<User> conflictUserList = new ArrayList<>(); //用来装和将分配考试时间冲突的user
         List<User> userList = userRepository.findAll();  //用来装未冲突的user
+        List<User> assignedUserList = examDetailRepository.listUserByEid(eid); //已分配的老师
 
         Exam exam = examRepository.findById(eid).get(); //获取即将分配的考试
         List<ExamDetail> examDetailList = examDetailRepository.findAll();
@@ -104,8 +141,7 @@ public class ExamService {
                 iter.remove();
             }
         }
-
-        return Map.of("conflictUsers", conflictUserList, "availableUser", userList);
+        return Map.of("assignedUsers", assignedUserList, "availableUser", userList, "conflictUsers", conflictUserList);
     }
 
     //在后端打印log,模拟发送信息
@@ -123,24 +159,11 @@ public class ExamService {
                     cnt++;
                 }
             }
-            message = message + u.getName() + " 监考次数： " + cnt + "\n";
+            message = message + u.getName() + " 同时段监考次数： " + cnt + "\n";
         }
         log.debug(message);
 
 
     }
-
-    //生成冲突警告信息，返回String
-    private String generateWarningMessage(User u, Exam e1, Exam e2) {
-        return u.getName() + "教师监考的"
-                + e1.getName() + " : " + e1.getBeginTime().toString() + " - " + e1.getEndTime().toString()
-                + " 和 " + e2.getName() + " : "+ e2.getBeginTime() + " - " + e2.getEndTime() + "冲突";
-    }
-
-    //删除ExamDetail
-    public void rmExamDetail(int edid) {
-        examDetailRepository.deleteById(edid);
-    }
-
 
 }
