@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 @Transactional
@@ -32,6 +34,10 @@ public class TaskService {
 
     public Task getTask(int tid) {
         return taskRepository.findById(tid).get();
+    }
+
+    public List<Task> listTasks() {
+        return taskRepository.findAll();
     }
 
     public void rmTask(int tid) {taskRepository.deleteById(tid);}
