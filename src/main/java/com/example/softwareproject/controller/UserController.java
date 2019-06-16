@@ -83,7 +83,9 @@ public class UserController {
 
 
     /**
-     * 用户获取分配给他的所有任务
+     * 获取用户被分配的任务
+     * @param uid
+     * @return
      */
     @GetMapping("/users/{uid}/tasks")
     public Map getTaskDetail(@PathVariable int uid) {
@@ -91,8 +93,12 @@ public class UserController {
     }
 
     /**
-    * 用户回复分配的任务
+     * 用户回复分配的任务
      * json传来用户完成的任务内容
+     * @param uid
+     * @param tid
+     * @param taskDetail
+     * @return
      */
     @PatchMapping("/users/{uid}/tasks/{tid}")
     public Map response(@PathVariable int uid, @PathVariable int tid, @RequestBody TaskDetail taskDetail) {
@@ -107,22 +113,27 @@ public class UserController {
             if (LocalDateTime.now().isAfter(task.getDeadLine())) {
                 db_taskDetail.setFinishStatus(2);
                 System.out.println("enter1");
-                return Map.of("taskDetail", taskService.modifyTaskDetail(db_taskDetail),"info",userService.generatePromptMessage(task));
+                return Map.of("taskDetails", taskService.modifyTaskDetail(db_taskDetail,uid),"info",userService.generatePromptMessage(task));
 
             } else {
                 db_taskDetail.setFinishStatus(1);
                 System.out.println("enter2");
-                return Map.of("taskDetail", taskService.modifyTaskDetail(db_taskDetail));
+                return Map.of("taskDetails", taskService.modifyTaskDetail(db_taskDetail,uid));
 
             }
         } else {
             System.out.println("enter3");
-                return Map.of("taskDetail", taskService.modifyTaskDetail(db_taskDetail));
+                return Map.of("taskDetails", taskService.modifyTaskDetail(db_taskDetail,uid));
 
         }
 
     }
 
+    /**
+     * 获取该任务分配的用户列表
+     * @param tid
+     * @return
+     */
     @GetMapping("/tasks/{tid}")
     public Map ListUsersRes(@PathVariable int tid) {
         return Map.of("taskDetails",userService.getOthersRes(tid));

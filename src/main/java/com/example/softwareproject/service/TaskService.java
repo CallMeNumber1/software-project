@@ -23,9 +23,10 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public Task addTask(Task task) {
+    public List<Task> addTask(Task task) {
         Task t = taskRepository.save(task);
-        return taskRepository.refresh(t);
+        taskRepository.refresh(t);
+        return taskRepository.findAll();
     }
 
     public Task modify(Task task) {
@@ -53,8 +54,15 @@ public class TaskService {
         return taskDetailRepository.refresh(td);
     }
 
-    public TaskDetail modifyTaskDetail(TaskDetail taskDetail) {
-        return taskDetailRepository.save(taskDetail);
+    /**
+     * 当用户修改了回复内容
+     * @param taskDetail
+     * @param uid
+     * @return 返回分配给该用户的所有任务
+     */
+    public List<TaskDetail> modifyTaskDetail(TaskDetail taskDetail,int uid) {
+        taskDetailRepository.save(taskDetail);
+        return taskDetailRepository.listTaskDetailByUid(uid);
     }
 
     public void rmTaskDetail(int tdId) {taskDetailRepository.deleteById(tdId);}

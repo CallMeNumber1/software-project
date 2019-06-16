@@ -1,6 +1,7 @@
 package com.example.softwareproject.service;
 
 import com.example.softwareproject.entity.Exam;
+import com.example.softwareproject.entity.Task;
 import com.example.softwareproject.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +25,16 @@ public class AddDataService {
     @Autowired
     private UserService userService;
     @Autowired
+    private TaskService taskService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+
+    public void init_Admin() {
+        User admin = new User("black","1020","123456",User.ADMIN_AUTHORITY);
+        userService.addUser(admin);
+    }
+
 
     public void init_Exam() {
         Exam e1 = new Exam();
@@ -68,5 +78,27 @@ public class AddDataService {
     public void init_ExamDetail(int eid, int[] array) {
         examService.setExamDetail(eid, array);
     }
+
+    public void init_Task() {
+        Task task = new Task();
+        task.setTitle("SOA实验报告");
+        task.setDescription("根据数字东林有关建设文档完成验实报告一和实验报告二。");
+        task.setDeadLine(LocalDateTime.of(2019, 6, 23, 0, 0, 0));
+
+        Task task1 = new Task();
+        task1.setTitle("软件测试实验报告");
+        task1.setDescription("根据实验指导书完成实验一至四，其中等价类的设计要着重注意。");
+        task1.setDeadLine(LocalDateTime.of(2019, 6, 10, 0, 0, 0));
+
+        taskService.addTask(task);
+        taskService.addTask(task1);
+    }
+
+    public void init_TaskDetail() {
+        taskService.allocate(2,1);
+        taskService.allocate(1,2);
+        taskService.allocate(2,2);
+    }
+
 
 }
