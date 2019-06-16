@@ -17,12 +17,12 @@ Content-Type: application/json
 ###
 
 # 用户登录
-# token: ea65098d334033f3391d50c76686329fc4dac73cee35367d63e3958d71c9c19486027abb63408656e66826c52c5ee734
+# token: 705c562bf14ed6fc2de11cc3522fc999dde85e393a29a083e49f9f5f2ae918dd3e4fe0e2e047821c4acb80dff129cc2b
 POST http://localhost:8080/api/login
 Content-Type: application/json
 
 {
-  "account": "2001",
+  "account": "3001",
   "password": "123456"
 }
 

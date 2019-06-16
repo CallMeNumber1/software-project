@@ -37,6 +37,10 @@ public class TaskService {
         return taskRepository.findById(tid).get();
     }
 
+    public List<Task> listTasks() {
+        return taskRepository.findAll();
+    }
+
     public void rmTask(int tid) {taskRepository.deleteById(tid);}
 
     public TaskDetail allocate(int uid, int tid){
