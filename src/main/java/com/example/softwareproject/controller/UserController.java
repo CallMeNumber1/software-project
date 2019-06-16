@@ -44,6 +44,17 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * 根据uid 返回 该老师的所有监考
+     * @param uid
+     * @return
+     */
+    @GetMapping("user_examlist/{uid}")
+    public Map listUserExamDetail(@RequestAttribute int uid) {
+        return userService.listUserExamList(uid);
+    }
+
+
 
     /**
      * 获取所有考试

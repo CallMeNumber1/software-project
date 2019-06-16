@@ -51,6 +51,11 @@ public class ExamServiceTests {
     }
 
     @Test
+    public void set_ExamDetail_3() {
+        addDataService.init_ExamDetail(3,new int[]{3});
+    }
+
+    @Test
     public void rmExam_test() {
         examService.rmExam(1);
     }
