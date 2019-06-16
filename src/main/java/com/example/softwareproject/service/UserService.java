@@ -26,7 +26,10 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private TaskDetailRepository taskDetailRepository;
-
+    // add by chong 6-16
+    public User getUserById(int id) {
+        return userRepository.findById(id).get();
+    }
     public User addUser(User user) {
         User u = userRepository.save(user);
         return userRepository.refresh(u );
