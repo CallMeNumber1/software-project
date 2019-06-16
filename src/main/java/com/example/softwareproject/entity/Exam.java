@@ -31,7 +31,15 @@ public class Exam {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;    //结束时间
     private String location;          //考试教室
-    private int numbersOfTeacher = 5;      //人数
+    private int numbersOfTeacher = 3;      //人数
+
+    public static final int STATUS_UNASSIGNIED = 0;
+    public static final int STATUS_ASSIGNIED = 1;
+    public static final int STATUS_FULFILL = 2;
+
+    private int status = STATUS_UNASSIGNIED; //考试的分配转态，默认未分配
+
+
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)

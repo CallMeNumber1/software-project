@@ -65,9 +65,8 @@ public class AddDataService {
         userService.addUser(admin);
     }
 
-    public void init_ExamDetail() {
-        int[] array = new int[]{1, 2, 3};
-        examService.setExamDetail(1,array);
+    public void init_ExamDetail(int eid, int[] array) {
+        examService.setExamDetail(eid, array);
     }
 
 }
