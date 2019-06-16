@@ -4,6 +4,7 @@ import com.example.softwareproject.entity.Exam;
 import com.example.softwareproject.service.ExamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,7 @@ import java.util.Map;
 /**
  * @program: software-project
  * @description: 用户请求处理
- * @author: LiYi
+ * @author: LiYi, zhanyeye
  * @create: 2019-06-10 14:34
  */
 import com.example.softwareproject.entity.Task;
@@ -36,21 +37,41 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private ExamService examService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private TaskService taskService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     @GetMapping("/exams")
     public Map getExams() {
         List<Exam> exams = examService.listExams();
         return Map.of("exams", exams);
     }
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private TaskService taskService;
+
+    /**
+     *  用户修改个人信息
+     * @param uid  从request属性中获取
+     * @param user
+     * @return
+     */
+    @PatchMapping("/users/{uid}")
+    public Map modifyUser(@RequestAttribute int uid, @RequestBody User user) {
+        user.setId(uid);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User u = userService.modifyUser(user);
+        return Map.of("user", u);
+    }
+
+
 
     /**
      * 用户获取分配给他的所有任务
      */
-    @GetMapping("/users/{uid}")
+    @GetMapping("/users/{uid}/tasks")
     public Map getTaskDetail(@PathVariable int uid) {
         return Map.of("taskDetails", userService.getTaskDetails(uid));
     }
