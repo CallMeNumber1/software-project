@@ -79,7 +79,12 @@ public class UserController {
         User u = userService.modifyUser(user);
         return Map.of("user", u);
     }
-
+    // 6-16 add by chong
+    @GetMapping("/users/{uid}")
+    public Map getUser(@PathVariable int uid) {
+        User u = userService.getUserById(uid);
+        return Map.of("user", u);
+    }
 
 
     /**

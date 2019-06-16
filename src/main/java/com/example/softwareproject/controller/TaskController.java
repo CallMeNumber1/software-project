@@ -13,7 +13,15 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
-
+    // add by chong 管理员获取所有任务
+    @GetMapping("/tasks")
+    public Map getTasks() {
+        return Map.of("tasks", taskService.listTasks());
+    }
+    @GetMapping("/tasks/{tid}")
+    public Map getTask(@PathVariable int tid) {
+        return Map.of("task", taskService.getTask(tid));
+    }
     /**
      * 管理员新增任务
      * @param task
@@ -29,7 +37,7 @@ public class TaskController {
      * @param task
      * @return
      */
-    @PatchMapping("/tasks")
+    @PatchMapping("/tasks/{tid}")
     public Map modifyTask(@RequestBody Task task) {
         return Map.of("task", taskService.modify(task));
     }

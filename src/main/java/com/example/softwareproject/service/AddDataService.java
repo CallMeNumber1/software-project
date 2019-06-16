@@ -30,11 +30,6 @@ public class AddDataService {
     private PasswordEncoder passwordEncoder;
 
 
-    public void init_Admin() {
-        User admin = new User("black","1020","123456",User.ADMIN_AUTHORITY);
-        userService.addUser(admin);
-    }
-
 
     public void init_Exam() {
         Exam e1 = new Exam();
