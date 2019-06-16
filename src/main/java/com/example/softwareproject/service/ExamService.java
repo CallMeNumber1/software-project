@@ -8,6 +8,7 @@ import com.example.softwareproject.entity.User;
 import com.example.softwareproject.repository.ExamDetailRepository;
 import com.example.softwareproject.repository.ExamRepository;
 import com.example.softwareproject.repository.UserRepository;
+import com.example.softwareproject.util.Invigilation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -91,6 +92,18 @@ public class ExamService {
             examDetailRepository.save(examDetail);
         }
         return null;
+    }
+
+    public Map listExamDetails() {
+        List<Invigilation> invigilationList = new ArrayList<>();
+        List<Exam> examList = examRepository.findAll();
+        for (Exam e : examList) {
+            Invigilation invig = new Invigilation();
+            invig.setExam(e);
+            invig.setUserlist(examDetailRepository.listUserByEid(e.getId()));
+            invigilationList.add(invig);
+        }
+        return Map.of("examDetailList", invigilationList);
     }
 
     public void rmExamDetail(int eid) {

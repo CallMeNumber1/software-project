@@ -45,11 +45,25 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
 
+    /**
+     * 获取所有考试
+     * @return
+     */
     @GetMapping("/exams")
     public Map getExams() {
         List<Exam> exams = examService.listExams();
         return Map.of("exams", exams);
     }
+
+    /**
+     * 返回所有监考信息
+     * @return
+     */
+    @GetMapping("/exam_details")
+    public Map listExamDetail() {
+        return examService.listExamDetails();
+    }
+
 
 
     /**
