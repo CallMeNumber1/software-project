@@ -22,7 +22,11 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    /**
+     *关闭任务，不可再修改
+     */
     private int isLocked;
+
     private String title;
     //普通长度可能不够
     @Column(columnDefinition = "TEXT")
