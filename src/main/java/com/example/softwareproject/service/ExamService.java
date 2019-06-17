@@ -91,6 +91,7 @@ public class ExamService {
             examDetail.setTeacher(user);
             examDetailRepository.save(examDetail);
         }
+        sendMessage(exam);
         return null;
     }
 
