@@ -59,11 +59,7 @@ public class AddDataService {
         userService.addUser(u3);
         userService.addUser(u4);
     }
-
-    public void init_Admin() {
-        User admin = new User("black","1020",passwordEncoder.encode("123456"),User.ADMIN_AUTHORITY);
-        userService.addUser(admin);
-    }
+    
 
     public void init_ExamDetail(int eid, int[] array) {
         examService.setExamDetail(eid, array);
