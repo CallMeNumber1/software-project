@@ -30,44 +30,58 @@ public class AddDataService {
     private PasswordEncoder passwordEncoder;
 
 
-
     public void init_Exam() {
         Exam e1 = new Exam();
         e1.setName("Web程序设计");
         e1.setLocation("925");
         e1.setBeginTime(LocalDateTime.of(2019, 6, 6, 13, 0, 0));
         e1.setEndTime(LocalDateTime.of(2019, 6, 6, 15, 0, 0));
-        examService.addExam(e1);
 
         Exam e2 = new Exam();
         e2.setName("系统程序设计");
-        e2.setLocation("925");
+        e2.setLocation("923");
         e2.setBeginTime(LocalDateTime.of(2019, 6, 6, 15, 0, 0));
         e2.setEndTime(LocalDateTime.of(2019, 6, 6, 17, 0, 0));
-        examService.addExam(e2);
 
         Exam e3 = new Exam();
         e3.setName("Android");
-        e3.setLocation("922");
-        e3.setBeginTime(LocalDateTime.of(2019, 6, 6, 10, 0, 0));
-        e3.setEndTime(LocalDateTime.of(2019, 6, 6, 11, 0, 0));
+        e3.setLocation("909");
+        e3.setBeginTime(LocalDateTime.of(2019, 6, 18, 10, 0, 0));
+        e3.setEndTime(LocalDateTime.of(2019, 6, 18, 11, 0, 0));
+
+        Exam e4 = new Exam();
+        e4.setName("软件测试");
+        e4.setLocation("902");
+        e4.setBeginTime(LocalDateTime.of(2019, 6, 18, 8, 0, 0));
+        e4.setEndTime(LocalDateTime.of(2019, 6, 18, 9, 0, 0));
+
+        examService.addExam(e1);
+        examService.addExam(e2);
         examService.addExam(e3);
+        examService.addExam(e4);
     }
 
     public void init_Teacher() {
         User u1 = new User("black","3001",passwordEncoder.encode("123456"),User.USER_AUTHORITY);
         User u2 = new User("while","3002",passwordEncoder.encode("123456"),User.USER_AUTHORITY);
         User u3 = new User("belly","3003",passwordEncoder.encode("123456"),User.USER_AUTHORITY);
-        User u4 = new User("monk","3004",passwordEncoder.encode("123456"),User.USER_AUTHORITY);
+        User u4 = new User("monky","3004",passwordEncoder.encode("123456"),User.USER_AUTHORITY);
+        User u5 = new User("sun","3005",passwordEncoder.encode("123456"),User.USER_AUTHORITY);
         userService.addUser(u1);
         userService.addUser(u2);
         userService.addUser(u3);
         userService.addUser(u4);
+        userService.addUser(u5);
     }
 
-    
+    //默认分配监考
+    public void init_ExamDetail() {
+        examService.setExamDetail(3, new int[] {1, 2, 3});
+        examService.setExamDetail(4, new int[] {2, 3, 4});
+    }
 
-    public void init_ExamDetail(int eid, int[] array) {
+    //自定义分配监考
+    public void init_ExamDetail_custom(int eid, int[] array) {
         examService.setExamDetail(eid, array);
     }
 

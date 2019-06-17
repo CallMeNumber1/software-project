@@ -37,22 +37,22 @@ public class ExamServiceTests {
     public void init() {
         addDataService.init_Exam();
         addDataService.init_Teacher();
-        addDataService.init_ExamDetail(1,new int[]{1, 2, 3});
+        addDataService.init_ExamDetail();
     }
 
     @Test
     public void set_ExamDetail_1() {
-        addDataService.init_ExamDetail(1,new int[]{3});
+        addDataService.init_ExamDetail_custom(1,new int[]{3});
     }
 
     @Test
     public void set_ExamDetail_2() {
-        addDataService.init_ExamDetail(2,new int[]{3});
+        addDataService.init_ExamDetail_custom(2,new int[]{3});
     }
 
     @Test
     public void set_ExamDetail_3() {
-        addDataService.init_ExamDetail(3,new int[]{3});
+        addDataService.init_ExamDetail_custom(3,new int[]{3});
     }
 
     @Test
