@@ -14,6 +14,16 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    // add by chong 管理员获取所有任务
+    @GetMapping("/tasks")
+    public Map getTasks() {
+        return Map.of("tasks", taskService.listTasks());
+    }
+
+    @GetMapping("/tasks/{tid}")
+    public Map getTask(@PathVariable int tid) {
+        return Map.of("task", taskService.getTask(tid));
+    }
     /**
      * 管理员新增任务
      * @param task
@@ -45,7 +55,7 @@ public class TaskController {
         //return Map.of("taskDetail", taskService.allocate(uid, tid));
     }
 
-    @GetMapping("tasks/{tid}")
+    @GetMapping("tasks/{tid}/users")
     public Map getUsableUser(@PathVariable int tid) {
         return Map.of("userList",taskService.getUsableUsers(tid));
     }
