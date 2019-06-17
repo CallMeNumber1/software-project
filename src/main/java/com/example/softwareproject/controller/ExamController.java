@@ -1,11 +1,14 @@
 package com.example.softwareproject.controller;
 
 import com.example.softwareproject.entity.Exam;
+import com.example.softwareproject.entity.User;
+import com.example.softwareproject.repository.ExamDetailRepository;
 import com.example.softwareproject.service.ExamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,9 +32,9 @@ public class ExamController {
      * @return MAP
      */
     @PostMapping("/exams")
-    public Map postExam(@RequestBody Exam exam) {
+    public Map addExam(@RequestBody Exam exam) {
         examService.addExam(exam);
-        return Map.of("exam", exam);
+        return Map.of("exams", examService.listExams());
     }
 
     /**
@@ -40,7 +43,7 @@ public class ExamController {
      * @return Map
      */
     @PatchMapping("/exams/{eid}")
-    public Map putExam(@RequestBody Exam exam) {
+    public Map modifyExam(@RequestBody Exam exam) {
         Exam newExam = examService.modifyExam(exam);
         return Map.of("exam", newExam);
     }
@@ -54,15 +57,29 @@ public class ExamController {
         examService.rmExam(eid);
     }
 
+
+    /**
+     * 获取eid考试的分配情况
+     * 根据即将分配的eid,返回已选中、未冲突和冲突的用户，将3个集合封装在map中
+     * @param eid
+     * @return MAP
+     */
+    @GetMapping("/exam_details/{eid}")
+    public Map getUserStatus(@PathVariable int eid) {
+        return examService.getUserStatusByEid(eid);
+    }
+
+
     /**
      * 分配考试监考
-     * @param eid
-     * @param uid
+     * @param
+     * @param
      * @return Map
      */
-    @GetMapping("/exam_details/{eid}/{uid}")
-    public Map getExamDetail(@PathVariable int eid, @PathVariable int uid) {
-        return examService.setExamDetail(eid, uid);
+    @PostMapping("/exam_details/{eid}")
+    public void setExamDetail(@PathVariable int eid, @RequestBody int[] uids) {
+        examService.setExamDetail(eid,uids);
+        //不确定是否需要返回值
     }
 
     /**

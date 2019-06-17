@@ -55,6 +55,7 @@ public class LoginController {
                         role = ADMIN_ROLE;
                     }
                     response.setHeader("role", role);
+                    response.setHeader("uid",u.getId() + "");
                 }, () -> {
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "账户不存在！！！");
                 });

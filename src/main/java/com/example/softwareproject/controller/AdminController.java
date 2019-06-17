@@ -1,18 +1,12 @@
 package com.example.softwareproject.controller;
 
-import com.example.softwareproject.component.EncryptorComponent;
-import com.example.softwareproject.entity.Exam;
-import com.example.softwareproject.entity.ExamDetail;
 import com.example.softwareproject.entity.User;
-import com.example.softwareproject.repository.ExamDetailRepository;
-import com.example.softwareproject.service.ExamService;
 import com.example.softwareproject.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.PublicKey;
 import java.util.Map;
 
 @Slf4j
@@ -27,13 +21,12 @@ public class AdminController {
     @PostMapping("/users")
     public Map addUser(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User u =  userService.addUser(user);
-        return Map.of("user", u);
+        return Map.of("users", userService.listUsers());
     }
 
     @GetMapping("/UserList")
     public Map getUserList() {
-        return Map.of("userList", userService.findAllUser());
+        return Map.of("userList", userService.listUsers());
     }
 
     @DeleteMapping("users/{uid}")
@@ -47,6 +40,11 @@ public class AdminController {
         User u = userService.modifyUser(user);
         return Map.of("user", u);
     }
-
+    // 6-16 add by chong
+    @GetMapping("/users/{uid}")
+    public Map getUser(@PathVariable int uid) {
+        User u = userService.getUserById(uid);
+        return Map.of("user", u);
+    }
 
 }

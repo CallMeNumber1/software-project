@@ -1,0 +1,63 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+###
+
+# 用户对分配给他的指定任务进行回复
+PATCH http://localhost:8080/api/users/2/tasks/1
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+Content-Type: application/json
+
+{
+  "responseContent": "这是我测试延时的最新回复！"
+}
+
+###
+
+# 用户获取分配给他的任务
+GET http://localhost:8080/api/users/1/tasks
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+
+###
+
+
+
+# 用户获取分配的某一任务的所有用户信息
+GET http://localhost:8080/api/tasks/1
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+
+###
+
+# 用户获取被分配的某一任务
+GET http://localhost:8080/api/users/2/tasks/2
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+
+###
+# 用户修改个人信息
+PATCH http://localhost:8080/api/users/1/
+token: 0aa967514345228075417e3461fbf20e1dea9b627989b7caa16f0b00eab844fd836cfd568b4eaa813c2e74c57156af3d
+Content-Type: application/json
+
+{
+  "id": 100,
+  "name": "test!!!",
+  "account": "9999",
+  "password": "123456"
+}
+
+###
+
+GET http://localhost:8080/api/exam_details
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+
+###
+
+# 根据uid 返回 该老师的所有监考
+GET http://localhost:8080/api/user_examlist/100
+token: 8970ccb56e7ab9b48b1a5158868e309860c5719e9501979fbecb6ae3ef3438fd739d22988209e8a88946d2df7c042cb8
+
+###

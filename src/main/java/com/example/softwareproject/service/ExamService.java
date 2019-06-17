@@ -8,6 +8,7 @@ import com.example.softwareproject.entity.User;
 import com.example.softwareproject.repository.ExamDetailRepository;
 import com.example.softwareproject.repository.ExamRepository;
 import com.example.softwareproject.repository.UserRepository;
+import com.example.softwareproject.util.Invigilation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +40,10 @@ public class ExamService {
     private ExamDetailRepository examDetailRepository;
     @Autowired
     private TimeUtils timeUtils;
+
+    public List<Exam> listExams() {
+        return examRepository.findAll();
+    }
 
     public Exam addExam(Exam newExam) {
         List<Exam> exams = examRepository.listByLoc(newExam.getLocation());
@@ -66,49 +73,77 @@ public class ExamService {
         return examRepository.save(exam);
     }
 
-
-    public Map setExamDetail(int eid, int uid) {
-        User user = userRepository.findById(uid).get();
+    public Map setExamDetail(int eid, int[] uids) {
         Exam exam = examRepository.findById(eid).get();
-
-        //考试需要监考人数 和 已分配人数 比较
-        int assignedCnt = examDetailRepository.coutByEid(eid);
-        if (exam.getNumbersOfTeacher() <= assignedCnt) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "该考试监考人员已经分配完成,无需再分配！");
+        if (uids.length != 0) {
+            exam.setStatus(Exam.STATUS_ASSIGNIED); //设置监考已经分配
+        } else {
+            exam.setStatus(Exam.STATUS_UNASSIGNIED); //设置监考未分配
         }
 
-        List<Exam> examList = examDetailRepository.listExamByTid(uid); //uid 老师的所有监考考试
-        int conflictCount = 0; //记录exam 和 uid 老师已分派考试的时间的冲突次数：冲突达到 2 则不能再分配了
-        Exam conflictExam = null; //记录和哪门考试冲突
+        examDetailRepository.rmExamDetailByEid(eid); // 先根据eid 将examdetail 删除，以确保数据被更新
 
-        //循环比较待插入Exam 和老师监考的冲突次数
-        for(Exam e : examList) {
-            log.debug(e.getName());
-            if (timeUtils.isTimeConflict(e, exam)) {
-                conflictCount++;
-                conflictExam = e;
-                if (conflictCount == 2) {
-                    throw new ResponseStatusException(HttpStatus.CONFLICT, "同一时间同一教师只能执行 2 次不同监考！");
-                }
+        for (int i = 0; i < uids.length; i++) {
+            User user = userRepository.findById(uids[i]).get();
+            user.setInvigilationCnt(user.getInvigilationCnt() + 1); //监考次数加1
+
+            ExamDetail examDetail = new ExamDetail();
+            examDetail.setExam(exam);
+            examDetail.setTeacher(user);
+            examDetailRepository.save(examDetail);
+        }
+        sendMessage(exam);
+        return null;
+    }
+
+    public Map listExamDetails() {
+        List<Invigilation> invigilationList = new ArrayList<>();
+        List<Exam> examList = examRepository.findAll();
+        for (Exam e : examList) {
+            Invigilation invig = new Invigilation();
+            invig.setExam(e);
+            invig.setUserlist(examDetailRepository.listUserByEid(e.getId()));
+            invigilationList.add(invig);
+        }
+        return Map.of("examDetailList", invigilationList);
+    }
+
+    public void rmExamDetail(int eid) {
+        //删除前修改用户监考次数
+        List<User> userList = examDetailRepository.listUserByEid(eid);
+        for (User u : userList) {
+            u.setInvigilationCnt(u.getInvigilationCnt() - 1);
+        }
+        //删除前修改考试监考状态
+        List<Exam> examList = examDetailRepository.listExamByTid(eid);
+        for (Exam e : examList) {
+            e.setStatus(Exam.STATUS_UNASSIGNIED);
+        }
+        examDetailRepository.rmExamDetailByEid(eid);
+    }
+
+    //返回和eid考试 已分配、冲突、不冲突的教师
+    public Map getUserStatusByEid(int eid) {
+        List<User> conflictUserList = new ArrayList<>(); //用来装和将分配考试时间冲突的user
+        List<User> userList = userRepository.findAll();  //用来装未冲突的user
+        List<User> assignedUserList = examDetailRepository.listUserByEid(eid); //已分配的老师
+
+        Exam exam = examRepository.findById(eid).get(); //获取即将分配的考试
+        List<ExamDetail> examDetailList = examDetailRepository.findAll();
+        for (ExamDetail ed : examDetailList) {
+            if (timeUtils.isTimeConflict(ed.getExam(), exam)) {
+                conflictUserList.add(ed.getTeacher());
             }
         }
-
-        ExamDetail examDetail = new ExamDetail();
-        examDetail.setTeacher(user);
-        examDetail.setExam(exam);
-        examDetail = examDetailRepository.save(examDetail);
-
-        //如果这门考试已经分配完成 -> 发送信息
-        if (exam.getNumbersOfTeacher() == assignedCnt + 1) {
-            sendMessage(exam);
+        //如果出现在冲突集合中则删除
+        Iterator<User> iter = userList.iterator();
+        while (iter.hasNext()) {
+            User u = iter.next(); //移动游标，同时返回游标指向的元素
+            if (conflictUserList.contains(u)) {
+                iter.remove();
+            }
         }
-
-        if (conflictCount == 0) {
-            return Map.of("examDetail",examDetailRepository.refresh(examDetail));
-        } else {
-            String warning = generateWarningMessage(user, conflictExam, exam);
-            return Map.of("examDetail",examDetailRepository.refresh(examDetail), "warning", warning);
-        }
+        return Map.of("assignedUsers", assignedUserList, "availableUser", userList, "conflictUsers", conflictUserList);
     }
 
     //在后端打印log,模拟发送信息
@@ -126,24 +161,11 @@ public class ExamService {
                     cnt++;
                 }
             }
-            message = message + u.getName() + " 监考次数： " + cnt + "\n";
+            message = message + u.getName() + " 同时段监考次数： " + cnt + "\n";
         }
         log.debug(message);
 
 
     }
-
-    //生成冲突警告信息，返回String
-    private String generateWarningMessage(User u, Exam e1, Exam e2) {
-        return u.getName() + "教师监考的"
-                + e1.getName() + " : " + e1.getBeginTime().toString() + " - " + e1.getEndTime().toString()
-                + " 和 " + e2.getName() + " : "+ e2.getBeginTime() + " - " + e2.getEndTime() + "冲突";
-    }
-
-    //删除ExamDetail
-    public void rmExamDetail(int edid) {
-        examDetailRepository.deleteById(edid);
-    }
-
 
 }

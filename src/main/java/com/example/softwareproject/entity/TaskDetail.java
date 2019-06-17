@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+//创建联合约束
+@Table(name = "task_detail", uniqueConstraints = {@UniqueConstraint(columnNames={"task_id", "user_id"})})
 public class TaskDetail {
 
     @Id
@@ -24,7 +26,7 @@ public class TaskDetail {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    //任务完成的状态：0表示未完成，1表示延时完成，2表示按时完成
+    //任务完成的状态：1表示按时完成，2表示延时完成，3表示未完成
     private int finishStatus;
     //回复内容
     @Column(columnDefinition = "TEXT")
