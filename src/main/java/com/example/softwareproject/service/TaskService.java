@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -54,14 +56,6 @@ public class TaskService {
             TaskDetail n_td = taskDetailRepository.save(taskDetail);
             taskDetailRepository.refresh(n_td);
         }
-        /*User user = userRepository.findById(uid).get();
-        Task task = taskRepository.findById(tid).get();
-        TaskDetail taskDetail = new TaskDetail();
-        taskDetail.setTask(task);
-        taskDetail.setUser(user);
-        taskDetail.setFinishStatus(3);
-        TaskDetail td = taskDetailRepository.save(taskDetail);
-        return taskDetailRepository.refresh(td);*/
     }
 
     /**
@@ -73,6 +67,21 @@ public class TaskService {
     public List<TaskDetail> modifyTaskDetail(TaskDetail taskDetail,int uid) {
         taskDetailRepository.save(taskDetail);
         return taskDetailRepository.listTaskDetailByUid(uid);
+    }
+
+    /**
+     * 获取某一任务没有被分配到的用户集合
+     * @param tid
+     * @return
+     */
+    public List<User> getUsableUsers(int tid) {
+        List<TaskDetail> taskDetails = taskDetailRepository.listTaskDetailByTid(tid);
+        List<User> usedUsers = taskDetails.stream().
+                map(TaskDetail::getUser).collect(Collectors.toList());
+        List<User> allUsers = userRepository.findAll();
+        //取两集合的差集
+        List<User> usableUsers = allUsers.stream().filter(item -> !usedUsers.contains(item)).collect(Collectors.toList());
+        return usableUsers;
     }
 
     public void rmTaskDetail(int tdId) {taskDetailRepository.deleteById(tdId);}
