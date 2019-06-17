@@ -129,6 +129,10 @@ public class UserController {
 
     }
 
+    @GetMapping("/users/{uid}/tasks/{tid}")
+    public Map getTaskDetail(@PathVariable int uid, @PathVariable int tid) {
+        return Map.of("taskDetail", userService.getTaskDetail(uid, tid));
+    }
     /**
      * 获取该任务分配的用户列表
      * @param tid
