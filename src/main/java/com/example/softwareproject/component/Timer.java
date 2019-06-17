@@ -40,10 +40,10 @@ public class Timer {
         LocalDate time = LocalDate.now(); //获取今天日期
         LocalDate nextTime = time.plusDays(1);    //加一
         List<Exam> examList = examService.listExams();
-        log.debug("明日：" + nextTime.toString() + " 的考试有：");
+
         for (Exam e : examList) {
             if (e.getBeginTime().toLocalDate().isEqual(nextTime)) {
-                sendMessage(e);
+                sendMessage(e, nextTime);
             }
         }
     }
@@ -61,18 +61,20 @@ public class Timer {
     }
 
     //在后端打印log,模拟发送提醒信息
-    private void sendMessage(Exam exam) {
-        String message = exam.getName() + " :\n";
-        message = message + "考试时间：" + exam.getBeginTime() + " - " + exam.getEndTime();
-        message = message + "\n考试地点: " + exam.getLocation() + "\n监考人员信息：\n";
+    private void sendMessage(Exam exam, LocalDate nextTime) {
         List<User> userlist = examDetailRepository.listUserByEid(exam.getId());
+        log.debug("明日：" + nextTime.toString() + " 的考试：");
+        String message = "考试名称：" + exam.getName() + " \n";
+        message = message + "考试时间：" + exam.getBeginTime() + " - " + exam.getEndTime();
+        message = message + "\n考试地点: " + exam.getLocation() + "\n监考人员信息：";
         if (userlist.size() == 0) {
             message += "该考试尚未分配！！！\n";
         } else {
             for (User u : userlist) {
-                message = message + u.getName()  + "\n";
+                message = message + u.getName()  + ", ";
             }
         }
+        message += "\n";
 
         log.debug(message);
     }

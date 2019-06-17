@@ -30,7 +30,6 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private TaskDetailRepository taskDetailRepository;
-
     @Autowired
     private ExamDetailRepository examDetailRepository;
     

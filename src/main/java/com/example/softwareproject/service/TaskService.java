@@ -86,5 +86,4 @@ public class TaskService {
 
     public void rmTaskDetail(int tdId) {taskDetailRepository.deleteById(tdId);}
 
-
 }

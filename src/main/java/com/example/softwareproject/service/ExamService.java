@@ -44,6 +44,7 @@ public class ExamService {
     public List<Exam> listExams() {
         return examRepository.findAll();
     }
+
     public Exam addExam(Exam newExam) {
         List<Exam> exams = examRepository.listByLoc(newExam.getLocation());
         for (Exam e : exams) {
