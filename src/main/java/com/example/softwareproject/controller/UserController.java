@@ -50,7 +50,7 @@ public class UserController {
      * @return
      */
     @GetMapping("user_examlist/{uid}")
-    public Map listUserExamDetail(@RequestAttribute int uid) {
+    public Map listUserExam(@RequestAttribute int uid) {
         return userService.listUserExamList(uid);
     }
 

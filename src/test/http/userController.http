@@ -39,13 +39,13 @@ token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0f
 ###
 # 用户修改个人信息
 PATCH http://localhost:8080/api/users/1/
-token: 705c562bf14ed6fc2de11cc3522fc999dde85e393a29a083e49f9f5f2ae918dd3e4fe0e2e047821c4acb80dff129cc2b
+token: 0aa967514345228075417e3461fbf20e1dea9b627989b7caa16f0b00eab844fd836cfd568b4eaa813c2e74c57156af3d
 Content-Type: application/json
 
 {
   "id": 100,
   "name": "test!!!",
-  "account": "3099",
+  "account": "9999",
   "password": "123456"
 }
 

@@ -25,11 +25,7 @@ public class SoftwareProjectApplicationTests {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    //初始化管理员
-    public void initAdmin() {
-        addDataService.init_Admin();
-    }
+
 
 
 

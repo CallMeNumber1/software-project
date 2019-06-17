@@ -53,10 +53,10 @@ public class TaskController {
         //return Map.of("taskDetail", taskService.allocate(uid, tid));
     }
 
-    @GetMapping("tasks/{tid}")
-    public Map getUsableUser(@PathVariable int tid) {
-        return Map.of("userList",taskService.getUsableUsers(tid));
-    }
+//    @GetMapping("tasks/{tid}")
+//    public Map getUsableUser(@PathVariable int tid) {
+//        return Map.of("userList",taskService.getUsableUsers(tid));
+//    }
 
     /**
      * 管理员删除任务
