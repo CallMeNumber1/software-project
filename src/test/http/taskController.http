@@ -53,3 +53,9 @@ DELETE http://localhost:8080/api/admin/taskDetails/4
 token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
 
 ###
+
+# 管理员身份获取该任务可分配的用户
+GET http://localhost:8080/api/admin/tasks/2
+token: 19e30a184135046e620a58fa86e422f302e86e75503a3ead8530c7125a3a8d46f4a5c9a0fc49825fdaf1473989e77466
+
+###
