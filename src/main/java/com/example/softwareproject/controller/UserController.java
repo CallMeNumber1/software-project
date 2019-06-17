@@ -90,6 +90,7 @@ public class UserController {
         User u = userService.modifyUser(user);
         return Map.of("user", u);
     }
+
     // 6-16 add by chong
     @GetMapping("/users/{uid}")
     public Map getUser(@PathVariable int uid) {
@@ -154,7 +155,7 @@ public class UserController {
      * @param tid
      * @return
      */
-    @GetMapping("/tasks/{tid}")
+    @GetMapping("/tasks/{tid}/taskDetails")
     public Map ListUsersRes(@PathVariable int tid) {
         return Map.of("taskDetails",userService.getOthersRes(tid));
     }
