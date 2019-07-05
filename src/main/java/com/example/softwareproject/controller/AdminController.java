@@ -21,6 +21,7 @@ public class AdminController {
     @PostMapping("/users")
     public Map addUser(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userService.addUser(user);
         return Map.of("users", userService.listUsers());
     }
 
